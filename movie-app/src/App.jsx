@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import MovieList from "./MovieList";
 import { ContextProvider } from "./context/Context";
+import GoogleSignIn from "./GoogleSignIn";
 export const lightTheme = {
   body: "#FFF",
   color: "#000",
@@ -23,12 +24,13 @@ function App() {
     setTheme(theme1);
   };
   return (
-    <div style={theme}>
-      <ContextProvider value={{ theme, setTheme }}>
-        <button onClick={toggleTheme}>{theme.body}</button>
-        <MovieList />
-      </ContextProvider>
-    </div>
+    // <div style={theme}>
+    //   <ContextProvider value={{ theme, setTheme }}>
+    //     <button onClick={toggleTheme}>{theme.body}</button>
+    //     <MovieList />
+    //   </ContextProvider>
+    // </div>
+    <GoogleSignIn />
   );
 }
 
