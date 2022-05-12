@@ -1,52 +1,63 @@
+//@ts-check
 import React, { useEffect, useState } from "react";
-import { signInWithGoogle, auth } from "./connection/firebase";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+
+import {
+  getUserState,
+  signOutGoogle,
+  signInWithGoogle,
+} from "./connection/Firebase-singleton";
 
 export default function GoogleSignIn() {
   const [userDetail, setUserDetail] = useState({});
   const [auth1, setAuth1] = useState({});
-  const [loggedIn, isLoggedIn] = useState(false);
-  const auth = getAuth();
+  const [loggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    async function getUserData() {
+      const user = await getUserState();
+
+      console.log("Line16", user);
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
         console.log("lin17", user);
         const { displayName, email, photoURL } = user;
         setUserDetail({ displayName, email, photoURL });
-        isLoggedIn(true);
-
-        // ...
-      } else {
-        // User is signed out
-        // ...
+        setIsLoggedIn(true);
       }
-    });
+    }
+    getUserData();
   }, []);
-  const signOut1 = () => {
-    signOut(auth)
-      .then(function () {
-        // Sign-out successful.
-        isLoggedIn(false);
-        setUserDetail({});
-        console.log("Sign-out successful", isLoggedIn);
-      })
-      .catch(function (error) {
-        // An error happened.
-      });
+  const signOut2 = async () => {
+    try {
+      await signOutGoogle();
+      setIsLoggedIn(false);
+      setUserDetail({});
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+  const handleLogin = async () => {
+    const user = await signInWithGoogle();
+    console.log("line44", user);
+
+    if (!user) {
+      return alert("there is an issue while login");
+    }
+    const { displayName, email, photoURL } = user.user;
+    console.log("user", { displayName, email, photoURL }, user);
+    setUserDetail({ displayName, email, photoURL });
+    setIsLoggedIn(true);
   };
   return (
     <>
       {loggedIn ? (
-        <button onClick={signOut1}>Sign out</button>
+        <button onClick={signOut2}>Sign out</button>
       ) : (
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
+        <button onClick={handleLogin}>Sign in with Google</button>
       )}
       <h1>{userDetail.displayName}</h1>
       <h1>{userDetail.email}</h1>
-      <img src={userDetail.imageURL} />
+      <img src={userDetail.photoURL} />
     </>
   );
 }
