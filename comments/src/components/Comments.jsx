@@ -9,7 +9,7 @@ const Comments = ({ comments }) => {
     setReply(!reply);
   };
   const addReply = () => {
-    comments.children.push(commentText);
+    comments?.children?.push(commentText);
     console.log("line13", comments);
   };
   if (comments?.children?.length === 0)
@@ -21,7 +21,7 @@ const Comments = ({ comments }) => {
 
           <Button
             variant="primary"
-            onClick={() => {
+            onClick={(e) => {
               e.stopPropagation();
               addComment();
             }}
@@ -60,7 +60,7 @@ const Comments = ({ comments }) => {
     return (
       <div>
         <span
-          onClick={() => {
+          onClick={(e) => {
             setExpand(!expand);
           }}
         >
