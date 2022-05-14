@@ -22,6 +22,7 @@ const Comments = ({ comments }) => {
           <Button
             variant="primary"
             onClick={() => {
+              e.stopPropagation();
               addComment();
             }}
           >
@@ -32,14 +33,22 @@ const Comments = ({ comments }) => {
               <input
                 type="text"
                 value={commentText.comment_text}
-                onChange={(e) =>
+                onChange={(e) => {
+                  e.stopPropagation();
                   setCommentText({
                     comment_text: e.target.value,
                     children: [],
-                  })
-                }
+                  });
+                }}
               />
-              <button onClick={() => addReply()}> add comment</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addReply();
+                }}
+              >
+                add comment
+              </button>
             </>
           ) : (
             <></>
@@ -63,7 +72,8 @@ const Comments = ({ comments }) => {
 
               <Button
                 variant="primary"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   addComment();
                 }}
               >
@@ -74,14 +84,25 @@ const Comments = ({ comments }) => {
                   <input
                     type="text"
                     value={commentText.comment_text}
-                    onChange={(e) =>
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onChange={(e) => {
+                      e.stopPropagation();
                       setCommentText({
                         comment_text: e.target.value,
                         children: [],
-                      })
-                    }
+                      });
+                    }}
                   />
-                  <button onClick={() => addReply()}> add comment</button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addReply();
+                    }}
+                  >
+                    add comment
+                  </button>
                 </>
               ) : (
                 <></>
@@ -89,7 +110,7 @@ const Comments = ({ comments }) => {
             </Card.Body>
           </Card>
         </span>
-        <span style={{ display: expand ? "block" : "none", padding: "5px" }}>
+        <span style={{ display: expand ? "block" : "none", padding: "20px" }}>
           {comments?.children?.map((comment) => {
             {
               console.log(comment);
