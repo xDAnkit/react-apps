@@ -6,9 +6,11 @@ const Mute = () => {
   //   const [isKeyPressed, setIsKeyPressed] = useState(false);
   useEffect(() => {
     document.addEventListener("keydown", (event) => {
-      if (event.code === "Space" && isMuted && !isPressed) {
-        setIsMuted(false);
-        isPressed = true;
+      if (event.code === "Space" && isMuted) {
+        setIsMuted((prev) => {
+          return { isMuted: !prev };
+        });
+        // isPressed = true;
 
         // setIsKeyPressed(true);
 
@@ -16,9 +18,11 @@ const Mute = () => {
       }
     });
     document.addEventListener("keyup", (event) => {
-      if (event.code === "Space" && !isMuted && isPressed) {
-        setIsMuted(true);
-        isPressed = false;
+      if (event.code === "Space" && !isMuted) {
+        setIsMuted((prev) => {
+          return { isMuted: !prev };
+        });
+        // isPressed = false;
         // setIsKeyPressed(false);
         console.log("space keyup remove"); //whatever you want to do when space is pressed
       }
